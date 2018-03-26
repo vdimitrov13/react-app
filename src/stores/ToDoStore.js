@@ -1,19 +1,20 @@
 import { computed, observable } from "mobx"
 import fetch from 'isomorphic-fetch';
 import axios from 'axios'
+import Todo from './Todo'
 
-class Todo {
-  @observable value
-  @observable id
-  @observable complete
-  @observable fetched = false
+// class Todo {
+//   @observable value
+//   @observable id
+//   @observable complete
+//   @observable fetched = false
 
-  constructor(id, value) {
-    this.value = value
-    this.id = id
-    this.complete = false
-  }
-}
+//   constructor(id, value) {
+//     this.value = value
+//     this.id = id
+//     this.complete = false
+//   }
+// }
 
 export class TodoStore {
   @observable todos = []
@@ -29,10 +30,11 @@ export class TodoStore {
 
     axios({
       method : 'post',
-      url:'http://localhost:54133/api/note',
+      url:'http://localhost:1890/api/note',
       data: note
     }).then(function(response) {
-      ref.todos.push(new Todo(response.data.id, content))
+      const todo = new Todo(response.data.id, content);
+      ref.todos.push(todo);
       console.log('response::', response.data);
     }).catch(function(error) {
       console.log('ERROR::', error.data);
@@ -52,7 +54,7 @@ export class TodoStore {
 
     axios({
       method : 'delete',
-      url:'http://localhost:54133/api/note',
+      url:'http://localhost:1890/api/note',
       data: { "Ids": listToRemove} 
     }).then(function(response) {
       console.log('response::', response.data);
