@@ -10,6 +10,7 @@ export default class TodoList extends React.Component {
       e.target.value = ""
     }
   }
+  
 
   filter(e) {
     this.props.store.filter = e.target.value
@@ -33,11 +34,11 @@ export default class TodoList extends React.Component {
       </li>
     ))
     return <div>
-      <h1>todos</h1>
-      <input className="new" onKeyPress={this.createNew.bind(this)} />
-      <input className="filter" value={filter} onChange={this.filter.bind(this)} />
+      <h1>ToDo App List</h1>
+      <input className="new" onKeyPress={this.createNew.bind(this)} placeholder="Add ToDo"/>
+      <input className="filter" value={filter} onChange={this.filter.bind(this)} placeholder="Filter ToDos"/>
       <ul>{todoList}</ul>
-      <a href="#" onClick={clearComplete}>Clear Complete</a>
+      <button type="button" onClick={clearComplete} onHover= {"color: red"}>Clear Completed Todos</button>
     </div>
   }
 }

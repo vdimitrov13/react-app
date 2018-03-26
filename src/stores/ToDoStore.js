@@ -3,19 +3,6 @@ import fetch from 'isomorphic-fetch';
 import axios from 'axios'
 import Todo from './Todo'
 
-// class Todo {
-//   @observable value
-//   @observable id
-//   @observable complete
-//   @observable fetched = false
-
-//   constructor(id, value) {
-//     this.value = value
-//     this.id = id
-//     this.complete = false
-//   }
-// }
-
 export class TodoStore {
   @observable todos = []
   @observable filter = ""
@@ -44,8 +31,7 @@ export class TodoStore {
   edit(value){
      
   }
-
-
+  
   clearComplete = () => {
     console.log(this.todos.map(s => s.id))
     const incompleteTodos = this.todos.filter(todo => !todo.complete)
