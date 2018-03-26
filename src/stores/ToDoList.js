@@ -10,8 +10,12 @@ export default class TodoList extends React.Component {
       e.target.value = ""
     }
   }
-  
 
+  delete(id){
+    console.log(id)
+    this.props.store.deleteToDo(id)
+  }
+  
   filter(e) {
     this.props.store.filter = e.target.value
   }
@@ -25,12 +29,13 @@ export default class TodoList extends React.Component {
   }
   
   render() {
-    const { clearComplete, filter, filteredTodos, todos } = this.props.store
+    const { clearComplete, filter, filteredTodos, todos, deleteToDo } = this.props.store
 
     const todoList = filteredTodos.map(todo => (
       <li key={todo.id}>
        <input type="checkbox" onChange={this.toggleComplete.bind(this, todo)} value={todo.complete} checked={todo.complete} />
-       <span onClick={this.edit.bind(this, todo)}>{todo.value}</span>
+       <span>{todo.value}</span>&nbsp;
+       <button type="button" onClick={this.delete.bind(this, todo.id)}>x</button>
       </li>
     ))
     return <div>
@@ -38,7 +43,7 @@ export default class TodoList extends React.Component {
       <input className="new" onKeyPress={this.createNew.bind(this)} placeholder="Add ToDo"/>
       <input className="filter" value={filter} onChange={this.filter.bind(this)} placeholder="Filter ToDos"/>
       <ul>{todoList}</ul>
-      <button type="button" onClick={clearComplete} onHover= {"color: red"}>Clear Completed Todos</button>
+      <button type="button" className="delete" onClick={clearComplete}>Clear Completed Todos</button>
     </div>
   }
 }

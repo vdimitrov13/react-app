@@ -1,4 +1,4 @@
-import { computed, observable } from "mobx"
+import { action, computed, observable } from "mobx"
 import fetch from 'isomorphic-fetch';
 import axios from 'axios'
 import Todo from './Todo'
@@ -27,16 +27,25 @@ export class TodoStore {
       console.log('ERROR::', error.data);
     });
   }
-
-  edit(value){
-     
+   
+  deleteToDo(id) {
+    var toDoToRemove = this.todos.find(x => x.id == id)
+    this.todos.remove(toDoToRemove)
+    
+    axios({
+      method : 'delete',
+      url:"http://localhost:1890/api/note/" + id,
+      data: { "Id": id} 
+    }).then(function(response) {
+      console.log('response::', response.data);
+    }).catch(function(error) {
+      console.log('ERROR::', error.data);
+    });
   }
   
   clearComplete = () => {
-    console.log(this.todos.map(s => s.id))
     const incompleteTodos = this.todos.filter(todo => !todo.complete)
     let listToRemove = this.todos.filter(todo => todo.complete).map(x => x.id)
-    console.log(listToRemove)
 
     axios({
       method : 'delete',
