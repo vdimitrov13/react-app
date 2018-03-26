@@ -6819,7 +6819,7 @@ Trace:
   Exit code: 3221225786
   Command: C:\WINDOWS\system32\cmd.exe
   Arguments: /d /s /c react-app-rewired start
-  Directory: C:\Users\vdimi\Desktop\test\mobx-decorators-without-ejecting
+  Directory: C:\Users\vdimi\Desktop\asd\react-app
   Output:
   
       at ProcessTermError.MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)

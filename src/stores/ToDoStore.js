@@ -8,9 +8,9 @@ class Todo {
   @observable complete
   @observable fetched = false
 
-  constructor(value) {
+  constructor(id, value) {
     this.value = value
-    this.id = Date.now()
+    this.id = id
     this.complete = false
   }
 }
@@ -23,22 +23,43 @@ export class TodoStore {
     return this.todos.filter(todo => !this.filter || matchesFilter.test(todo.value))
   }
 
-  createTodo(value) {
-    this.todos.push(new Todo(value))
-    
+  createTodo(content) {
+    const ref = this
+    const note = { content }
+
     axios({
       method : 'post',
       url:'http://localhost:54133/api/note',
-      data: {value}
-    })
+      data: note
+    }).then(function(response) {
+      ref.todos.push(new Todo(response.data.id, content))
+      console.log('response::', response.data);
+    }).catch(function(error) {
+      console.log('ERROR::', error.data);
+    });
   }
 
-  deleteToDo(value) {
-    this.todos.splice(value)
+  edit(value){
+     
   }
+
 
   clearComplete = () => {
+    console.log(this.todos.map(s => s.id))
     const incompleteTodos = this.todos.filter(todo => !todo.complete)
+    let listToRemove = this.todos.filter(todo => todo.complete).map(x => x.id)
+    console.log(listToRemove)
+
+    axios({
+      method : 'delete',
+      url:'http://localhost:54133/api/note',
+      data: { "Ids": listToRemove} 
+    }).then(function(response) {
+      console.log('response::', response.data);
+    }).catch(function(error) {
+      console.log('ERROR::', error.data);
+    });
+
     this.todos.replace(incompleteTodos)
   }
 }
