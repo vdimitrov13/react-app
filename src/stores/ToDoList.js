@@ -1,6 +1,5 @@
 import React from "react"
 import { observer } from "mobx-react"
-import { autorun } from "mobx";
 
 
 @observer
@@ -21,8 +20,11 @@ export default class TodoList extends React.Component {
   }
 
   delete(id){
-    console.log(id)
     this.props.store.deleteToDo(id)
+  }
+
+  edit(todo){   
+    this.props.store.editToDo(todo)
   }
   
   filter(e) {
@@ -32,20 +34,17 @@ export default class TodoList extends React.Component {
   toggleComplete(todo) {
     todo.complete = !todo.complete
   }
-
-  edit(todo){
-    console.log(todo.id);
-  }
   
   render() {
     const { clearComplete, filter, filteredTodos, todos, deleteToDo,
-      getAllToDosFromServer } = this.props.store
+      getAllToDosFromServer, editToDo } = this.props.store
     
     const todoList = filteredTodos.map(todo => (
       <li key={todo.id}>
        <input type="checkbox" onChange={this.toggleComplete.bind(this, todo)} value={todo.complete} checked={todo.complete} />
-       <span>{todo.value}</span>&nbsp;
+       <span>{todo.value}</span>&nbsp;&nbsp;
        <button type="button" onClick={this.delete.bind(this, todo.id)}>x</button>
+       <button type="button" onClick={this.edit.bind(this, todo)} value = {todo.editable}>Edit</button>
       </li>
     ))
     return <div>

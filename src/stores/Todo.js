@@ -1,10 +1,11 @@
-import { computed, observable } from "mobx"
+import { observable } from "mobx"
 
 export default class Todo {
     @observable value
     @observable id
     @observable complete
     @observable fetched = false
+    @observable editable
   
     constructor(id, value) {
       this.value = value

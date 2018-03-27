@@ -1,5 +1,4 @@
-import { action, computed, observable } from "mobx"
-import fetch from 'isomorphic-fetch';
+import { computed, observable } from "mobx"
 import axios from 'axios'
 import Todo from './Todo'
 
@@ -11,7 +10,7 @@ export class TodoStore {
     return this.todos.filter(todo => !this.filter || matchesFilter.test(todo.value))
   }
 
-  @action getAllToDosFromServer(){
+  getAllToDosFromServer(){
     const ref = this
     axios({
       method : 'get',
@@ -45,6 +44,11 @@ export class TodoStore {
     });
   }
    
+  editToDo(todo){
+    console.log(todo.id)
+    console.log(todo.value)
+  }
+
   deleteToDo(id) {
     var toDoToRemove = this.todos.find(x => x.id === id)
     this.todos.remove(toDoToRemove)
@@ -78,4 +82,4 @@ export class TodoStore {
   }
 }
 
-export default new TodoStore
+export default new TodoStore()
