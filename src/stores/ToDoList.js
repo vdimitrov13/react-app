@@ -1,6 +1,6 @@
 import React from "react"
 import { observer } from "mobx-react"
-
+ 
 
 @observer
 export default class TodoList extends React.Component {
@@ -8,6 +8,10 @@ export default class TodoList extends React.Component {
   	this.props.store.getAllToDosFromServer()
   }
   
+  toggleEditable(todo){
+    todo.editable = true
+  }
+
   createNew(e) {
     if (e.which === 13) {
       this.props.store.createTodo(e.target.value)
@@ -15,16 +19,25 @@ export default class TodoList extends React.Component {
     }
   }
 
-  getAll(){
-    this.props.store.getAllToDosFromServer()
-  }
-
   delete(id){
     this.props.store.deleteToDo(id)
   }
 
-  edit(todo){   
-    this.props.store.editToDo(todo)
+  handleEdit(todo){
+    if(todo.editable === "hidden"){
+      todo.editable = "text"
+    }
+    else{
+      todo.editable = "hidden"
+    }
+  }
+
+  edit(e, todo){  
+    if(e.key == 'Enter'){
+      console.log(e.target.value)
+      console.log(todo) 
+    }
+    //this.props.store.editToDo(todo)
   }
   
   filter(e) {
@@ -42,9 +55,10 @@ export default class TodoList extends React.Component {
     const todoList = filteredTodos.map(todo => (
       <li key={todo.id}>
        <input type="checkbox" onChange={this.toggleComplete.bind(this, todo)} value={todo.complete} checked={todo.complete} />
-       <span>{todo.value}</span>&nbsp;&nbsp;
-       <button type="button" onClick={this.delete.bind(this, todo.id)}>x</button>
-       <button type="button" onClick={this.edit.bind(this, todo)} value = {todo.editable}>Edit</button>
+       <div id="todo-value">{todo.value}</div>&nbsp;&nbsp;
+       <button type="button" onClick={this.handleEdit.bind(this, todo)}>Edit</button> 
+       <button id="button-delete"type="button" onClick={this.delete.bind(this, todo.id)}>X</button>
+       <input class="edit" type={todo.editable} defaultValue={todo.value} onClick= {this.edit.bind(this, todo)}/>
       </li>
     ))
     return <div>

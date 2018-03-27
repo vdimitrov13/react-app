@@ -5,7 +5,7 @@ export default class Todo {
     @observable id
     @observable complete
     @observable fetched = false
-    @observable editable
+    @observable editable = "hidden"
   
     constructor(id, value) {
       this.value = value

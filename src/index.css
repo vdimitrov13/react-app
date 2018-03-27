@@ -4,9 +4,29 @@ body {
 	padding: 0;
 }
 
+#todo-value{
+	display: inline-block;
+	width: 12em;
+	border: #33bdef;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 10px;
+	text-align: center;
+	background-color: rgba(255, 255, 255, 0.5);
+	color:#33bdef;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
 
+#button-delete{
+	background:-moz-linear-gradient(top, #ee4a4f 5%, #f10707 100%);
+	background:-webkit-linear-gradient(top, #ee4a4f 5%, #f10707 100%);
+	background:-o-linear-gradient(top, #ee4a4f 5%, #f10707 100%);
+	background:-ms-linear-gradient(top, #ee4a4f 5%, #f10707 100%);
+	background:linear-gradient(to bottom, #ee4a4f 5%, #f10707 100%);
+}
 button {
-  -moz-box-shadow: 0px 1px 0px 0px #f0f7fa;
+    -moz-box-shadow: 0px 1px 0px 0px #f0f7fa;
 	-webkit-box-shadow: 0px 1px 0px 0px #f0f7fa;
 	box-shadow: 0px 1px 0px 0px #f0f7fa;
 	background:-moz-linear-gradient(top, #33bdef 5%, #019ad2 100%);
@@ -24,9 +44,9 @@ button {
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
-	font-size:15px;
+	font-size:12px;
 	font-weight:bold;
-	padding:6px 24px;
+	padding:4px 19px;
 	text-decoration:none;
 	text-shadow:0px -1px 0px #5b6178;
 }
@@ -98,7 +118,7 @@ input {
 	color: #019ad2;
 }
 
-.new-todo,
+.todo-value,
 .edit {
 	position: relative;
 	margin: 0;
@@ -117,7 +137,7 @@ input {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.new-todo {
+.todo-value {
 	padding: 16px 16px 16px 60px;
 	border: none;
 	background: rgba(0, 0, 0, 0.003);
@@ -368,27 +388,3 @@ html .clear-completed:active {
 	text-decoration: underline;
 }
 
-/*
-	Hack to remove background from Mobile Safari.
-	Can't use it globally since it destroys checkboxes in Firefox
-*/
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-	.toggle-all,
-	.todo-list li .toggle {
-		background: none;
-	}
-
-	.todo-list li .toggle {
-		height: 40px;
-	}
-}
-
-@media (max-width: 430px) {
-	.footer {
-		height: 50px;
-	}
-
-	.filters {
-		bottom: 10px;
-	}
-}
