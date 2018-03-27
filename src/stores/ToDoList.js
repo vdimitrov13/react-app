@@ -1,14 +1,23 @@
 import React from "react"
 import { observer } from "mobx-react"
+import { autorun } from "mobx";
 
 
 @observer
 export default class TodoList extends React.Component {
+  componentDidMount () {
+  	this.props.store.getAllToDosFromServer()
+  }
+  
   createNew(e) {
     if (e.which === 13) {
       this.props.store.createTodo(e.target.value)
       e.target.value = ""
     }
+  }
+
+  getAll(){
+    this.props.store.getAllToDosFromServer()
   }
 
   delete(id){
@@ -29,8 +38,9 @@ export default class TodoList extends React.Component {
   }
   
   render() {
-    const { clearComplete, filter, filteredTodos, todos, deleteToDo } = this.props.store
-
+    const { clearComplete, filter, filteredTodos, todos, deleteToDo,
+      getAllToDosFromServer } = this.props.store
+    
     const todoList = filteredTodos.map(todo => (
       <li key={todo.id}>
        <input type="checkbox" onChange={this.toggleComplete.bind(this, todo)} value={todo.complete} checked={todo.complete} />

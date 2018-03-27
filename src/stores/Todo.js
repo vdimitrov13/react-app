@@ -1,4 +1,3 @@
-import React from 'react';
 import { computed, observable } from "mobx"
 
 export default class Todo {
@@ -12,4 +11,4 @@ export default class Todo {
       this.id = id
       this.complete = false
     }
-  }
+}

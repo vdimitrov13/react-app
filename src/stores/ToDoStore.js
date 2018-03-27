@@ -11,6 +11,23 @@ export class TodoStore {
     return this.todos.filter(todo => !this.filter || matchesFilter.test(todo.value))
   }
 
+  @action getAllToDosFromServer(){
+    const ref = this
+    axios({
+      method : 'get',
+      url:'http://localhost:1890/api/note'
+    }).then(function(response) {
+      response.data.forEach(element => {
+        const todo = new Todo(element.id, element.content);
+        console.log(todo)
+        ref.todos.push(todo)
+      }); 
+      console.log('response::', response.data);
+    }).catch(function(error) {
+      console.log('ERROR::', error.data);
+    });
+  }
+  
   createTodo(content) {
     const ref = this
     const note = { content }
@@ -29,13 +46,13 @@ export class TodoStore {
   }
    
   deleteToDo(id) {
-    var toDoToRemove = this.todos.find(x => x.id == id)
+    var toDoToRemove = this.todos.find(x => x.id === id)
     this.todos.remove(toDoToRemove)
     
     axios({
       method : 'delete',
       url:"http://localhost:1890/api/note/" + id,
-      data: { "Id": id} 
+      
     }).then(function(response) {
       console.log('response::', response.data);
     }).catch(function(error) {

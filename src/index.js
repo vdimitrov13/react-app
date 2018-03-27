@@ -10,4 +10,4 @@ const test = (<TodoList store = {ToDoStore}/>)
 
 
 ReactDOM.render(test, document.getElementById("root"));
-registerServiceWorker();
+
