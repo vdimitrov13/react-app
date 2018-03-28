@@ -1,6 +1,8 @@
 import { computed, observable } from "mobx"
 import axios from 'axios'
 import Todo from './Todo'
+import { ApiCalls, Method } from '../ApiCalls'
+import { LOCALHOST_URL } from '../constants'
 
 export class TodoStore {
   @observable todos = []
@@ -11,90 +13,69 @@ export class TodoStore {
   }
 
   getAllToDosFromServer(){
-    const ref = this
-    
-    axios({
-      method : 'get',
-      url:'http://localhost:1890/api/note'
-    }).then(function(response) {
-      response.data.forEach(element => {
-        const todo = new Todo(element.id, element.content);
-        console.log(todo.id)
-        ref.todos.push(todo)
-      }); 
-      console.log('response::', response.data);
-    }).catch(function(error) {
-      console.log('ERROR::', error.data);
-    });
+    ApiCalls.call(Method.GET,
+                  this.getAllToDosSuccessCall.bind(this));
+  }
+
+  getAllToDosSuccessCall(response) {
+    this.todos = response.data.map(element => new Todo(element.id, element.content)); 
   }
   
   createTodo(content) {
-    const ref = this
     const note = { content }
+    ApiCalls.call(Method.POST,
+                  this.createToDoSuccessCall.bind(this), 
+                  undefined,
+                  note);
+  }
 
-    axios({
-      method : 'post',
-      url:'http://localhost:1890/api/note',
-      data: note
-    }).then(function(response) {
-      const todo = new Todo(response.data.id, content);
-      ref.todos.push(todo);
-      console.log('response::', response.data);
-    }).catch(function(error) {
-      console.log('ERROR::', error.data);
-    });
+  createToDoSuccessCall(response){
+    const todo = new Todo(response.data.id, response.data.content);
+    this.todos.push(todo);
   }
    
   editToDo(id, value){
-    let toDoToEdit= this.todos.filter(x => x.editable === "text");
-
-    var content = {    
+    const content = {    
       id: id,
       content: value     
     }
-    axios({
-      method : 'put',
-      url:"http://localhost:1890/api/note/",
-      data: content
-    }).then(function(response) {
-      toDoToEdit[0].value = response.data.content
-      toDoToEdit[0].editable = "hidden"
-      console.log('response::', response.data)
-    }).catch(function(error) {
-      console.log('ERROR::', error.data);
-    });
+
+    ApiCalls.call(Method.PUT,
+                  this.editToDoSuccessCall.bind(this), 
+                  undefined,
+                  content);
+  }
+
+  editToDoSuccessCall(response){
+    const toDoToEdit = this.todos.find(x => x.id == response.data.id)
+    console.log(response.data)
+    toDoToEdit.value = response.data.content  
+    toDoToEdit.editable = "hidden"
   }
 
   deleteToDo(todo) {
-    let list = this.todos.filter(todo => !todo.complete)
-    console.log(todo.id)
+    ApiCalls.call(Method.DELETE,
+                 this.deleteToDoSuccessCall.bind(this), 
+                 todo.id);
+    this.todos.remove(todo)
+  }
 
-    axios({
-      method : 'delete',
-      url:"http://localhost:1890/api/note/" + todo.id,
-      
-    }).then(function(response) {
-      console.log('response::', response.data);
-    }).catch(function(error) {
-      console.log('ERROR::', error.data);
-    });
-    this.todos.replace(list)
+  deleteToDoSuccessCall(response){
+    console.log(response)
   }
   
   clearComplete = () => {
+    const listToRemove = this.todos.filter(todo => todo.complete).map(x => x.id)
+    const data = { Ids : listToRemove} 
+    
+    ApiCalls.call(Method.DELETE,
+                  this.clearCompleteSuccesssCall.bind(this), 
+                  undefined,
+                  data);    
+  }
+  
+  clearCompleteSuccesssCall(){
     let incompleteTodos = this.todos.filter(todo => !todo.complete)
-    let listToRemove = this.todos.filter(todo => todo.complete).map(x => x.id)
-
-    axios({
-      method : 'delete',
-      url:'http://localhost:1890/api/note',
-      data: { "Ids": listToRemove} 
-    }).then(function(response) {
-      console.log('response::', response.data);
-    }).catch(function(error) {
-      console.log('ERROR::', error.data);
-    });
-
     this.todos.replace(incompleteTodos)
   }
 }

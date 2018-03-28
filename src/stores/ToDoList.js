@@ -1,11 +1,10 @@
 import React from "react"
 import { observer } from "mobx-react"
- 
 
 @observer
 export default class TodoList extends React.Component {
   componentDidMount () {
-  	this.props.store.getAllToDosFromServer()
+    this.props.store.getAllToDosFromServer()
   }
 
   createNew(e) {
@@ -48,7 +47,7 @@ export default class TodoList extends React.Component {
       getAllToDosFromServer, editToDo } = this.props.store
     
     const todoList = filteredTodos.map(todo => (
-      <li key={todo.id}>
+      <li key={todo.id} className="note">
        <input type="checkbox" onChange={this.toggleComplete.bind(this, todo)} value={todo.complete} checked={todo.complete} />
        <div id="todo-value">{todo.value}</div>&nbsp;&nbsp;
        <button type="button" onClick={this.handleEdit.bind(this, todo)}>Edit</button> 
