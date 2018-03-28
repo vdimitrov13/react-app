@@ -12,13 +12,14 @@ export class TodoStore {
 
   getAllToDosFromServer(){
     const ref = this
+    
     axios({
       method : 'get',
       url:'http://localhost:1890/api/note'
     }).then(function(response) {
       response.data.forEach(element => {
         const todo = new Todo(element.id, element.content);
-        console.log(todo)
+        console.log(todo.id)
         ref.todos.push(todo)
       }); 
       console.log('response::', response.data);
@@ -44,28 +45,44 @@ export class TodoStore {
     });
   }
    
-  editToDo(todo){
-    console.log(todo.id)
-    console.log(todo.value)
+  editToDo(id, value){
+    let toDoToEdit= this.todos.filter(x => x.editable === "text");
+
+    var content = {    
+      id: id,
+      content: value     
+    }
+    axios({
+      method : 'put',
+      url:"http://localhost:1890/api/note/",
+      data: content
+    }).then(function(response) {
+      toDoToEdit[0].value = response.data.content
+      toDoToEdit[0].editable = "hidden"
+      console.log('response::', response.data)
+    }).catch(function(error) {
+      console.log('ERROR::', error.data);
+    });
   }
 
-  deleteToDo(id) {
-    var toDoToRemove = this.todos.find(x => x.id === id)
-    this.todos.remove(toDoToRemove)
-    
+  deleteToDo(todo) {
+    let list = this.todos.filter(todo => !todo.complete)
+    console.log(todo.id)
+
     axios({
       method : 'delete',
-      url:"http://localhost:1890/api/note/" + id,
+      url:"http://localhost:1890/api/note/" + todo.id,
       
     }).then(function(response) {
       console.log('response::', response.data);
     }).catch(function(error) {
       console.log('ERROR::', error.data);
     });
+    this.todos.replace(list)
   }
   
   clearComplete = () => {
-    const incompleteTodos = this.todos.filter(todo => !todo.complete)
+    let incompleteTodos = this.todos.filter(todo => !todo.complete)
     let listToRemove = this.todos.filter(todo => todo.complete).map(x => x.id)
 
     axios({

@@ -7,10 +7,6 @@ export default class TodoList extends React.Component {
   componentDidMount () {
   	this.props.store.getAllToDosFromServer()
   }
-  
-  toggleEditable(todo){
-    todo.editable = true
-  }
 
   createNew(e) {
     if (e.which === 13) {
@@ -19,8 +15,9 @@ export default class TodoList extends React.Component {
     }
   }
 
-  delete(id){
-    this.props.store.deleteToDo(id)
+  delete(todo){
+    todo.complete = true
+    this.props.store.deleteToDo(todo)
   }
 
   handleEdit(todo){
@@ -32,12 +29,10 @@ export default class TodoList extends React.Component {
     }
   }
 
-  edit(e, todo){  
-    if(e.key == 'Enter'){
-      console.log(e.target.value)
-      console.log(todo) 
+  edit(e){  
+    if(e.key === 'Enter'){
+      this.props.store.editToDo(e.target.id, e.target.value)
     }
-    //this.props.store.editToDo(todo)
   }
   
   filter(e) {
@@ -57,8 +52,8 @@ export default class TodoList extends React.Component {
        <input type="checkbox" onChange={this.toggleComplete.bind(this, todo)} value={todo.complete} checked={todo.complete} />
        <div id="todo-value">{todo.value}</div>&nbsp;&nbsp;
        <button type="button" onClick={this.handleEdit.bind(this, todo)}>Edit</button> 
-       <button id="button-delete"type="button" onClick={this.delete.bind(this, todo.id)}>X</button>
-       <input class="edit" type={todo.editable} defaultValue={todo.value} onClick= {this.edit.bind(this, todo)}/>
+       <button id="button-delete"type="button" onClick={this.delete.bind(this, todo)}>X</button>
+       <input id= {todo.id} className="edit" type={todo.editable} defaultValue={todo.value} onKeyPress={this.edit.bind(this)}/>
       </li>
     ))
     return <div>
