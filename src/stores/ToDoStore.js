@@ -1,8 +1,7 @@
 import { computed, observable } from "mobx"
 import axios from 'axios'
 import Todo from './Todo'
-import { ApiCalls, Method } from '../ApiCalls'
-import { LOCALHOST_URL } from '../constants'
+import { ApiCalls, Method } from '../services/ApiCalls'
 
 export class TodoStore {
   @observable todos = []

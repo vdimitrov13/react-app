@@ -1,4 +1,4 @@
-import { LOCALHOST_URL } from './constants'
+import { LOCALHOST_URL } from '../utils/constants'
 
 import axios from 'axios'
 
