@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styles/index.css";
-import TodoList from "./stores/ToDoList"
+import TodoList from "./components/ToDoList"
 import ToDoStore from "./stores/ToDoStore";
 
 const test = (<TodoList store = { ToDoStore }/>)
