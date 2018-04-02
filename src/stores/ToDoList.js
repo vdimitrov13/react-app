@@ -7,19 +7,18 @@ export default class TodoList extends React.Component {
     this.props.store.getAllToDosFromServer()
   }
 
-  createNew(e) {
-    if (e.which === 13) {
+  handleCreateNew(e) {
+    if (e.key === 'Enter') {
       this.props.store.createTodo(e.target.value)
       e.target.value = ""
     }
   }
 
-  delete(todo){
-    todo.complete = true
+  handleDelete(todo){
     this.props.store.deleteToDo(todo)
   }
 
-  handleEdit(todo){
+  handleEditable(todo){
     if(todo.editable === "hidden"){
       todo.editable = "text"
     }
@@ -28,7 +27,7 @@ export default class TodoList extends React.Component {
     }
   }
 
-  edit(e){  
+  handleEdit(e){  
     if(e.key === 'Enter'){
       this.props.store.editToDo(e.target.id, e.target.value)
     }
@@ -50,14 +49,14 @@ export default class TodoList extends React.Component {
       <li key={todo.id} className="note">
        <input type="checkbox" onChange={this.toggleComplete.bind(this, todo)} value={todo.complete} checked={todo.complete} />
        <div id="todo-value">{todo.value}</div>&nbsp;&nbsp;
-       <button type="button" onClick={this.handleEdit.bind(this, todo)}>Edit</button> 
-       <button id="button-delete"type="button" onClick={this.delete.bind(this, todo)}>X</button>
-       <input id= {todo.id} className="edit" type={todo.editable} defaultValue={todo.value} onKeyPress={this.edit.bind(this)}/>
+       <button type="button" onClick={this.handleEditable.bind(this, todo)}>Edit</button> 
+       <button id="button-delete"type="button" onClick={this.handleDelete.bind(this, todo)}>X</button>
+       <input id= {todo.id} className="edit" type={todo.editable} defaultValue={todo.value} onKeyPress={this.handleEdit.bind(this)}/>
       </li>
     ))
     return <div>
       <h1>ToDo App List</h1>
-      <input className="new" onKeyPress={this.createNew.bind(this)} placeholder="Add ToDo"/>
+      <input className="new" onKeyPress={this.handleCreateNew.bind(this)} placeholder="Add ToDo"/>
       <input className="filter" value={filter} onChange={this.filter.bind(this)} placeholder="Filter ToDos"/>
       <ul>{todoList}</ul>
       <button type="button" className="delete" onClick={clearComplete}>Clear Completed Todos</button>

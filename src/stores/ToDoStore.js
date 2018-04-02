@@ -74,7 +74,7 @@ export class TodoStore {
   }
   
   clearCompleteSuccesssCall(){
-    let incompleteTodos = this.todos.filter(todo => !todo.complete)
+    const incompleteTodos = this.todos.filter(todo => !todo.complete)
     this.todos.replace(incompleteTodos)
   }
 }

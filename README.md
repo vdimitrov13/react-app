@@ -1,3 +1,4 @@
 # react-app
 Setup:
-#yarn install or #npm install
+#yarn install
+#yarn start
